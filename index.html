@@ -81,7 +81,7 @@
       <!-- Logo -->
       <section class="logo">
         <div>
-          <img src="/logo.png" alt="Gogole logo">
+          <img src="assets/logo.png" alt="Gogole logo">
           <h1>Gogole</h1>
         </div>
       </section>
@@ -90,8 +90,8 @@
       <main>
         <div class="searchbar">
           <div>
-            <form>
-              <input class="inputbar" type="text" autocomplete="off">
+            <form action="/query" method="POST">
+              <input name="q" class="inputbar" type="text">
               <input class="input-btn" type="submit" value="">
               <a href="#"><i class="bi bi-search"></i></a>
             </form>

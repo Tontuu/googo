@@ -26,7 +26,13 @@ fn get_content_type(filepath: &str) -> &'static str {
     }
 }
 
-fn serve_static_file(request: Request, filepath: &str, content_type: &str) -> io::Result<()> {
+fn serve_static_file(request: Request, mut filepath: &str) -> io::Result<()> {
+    if filepath.starts_with("/") {
+        filepath = &filepath[1..];
+    }
+
+    let content_type = get_content_type(filepath);
+
     let content_type_header = Header::from_bytes("Content-Type", content_type)
         .expect("Garbage on content-type headers!!!!");
 
@@ -38,26 +44,34 @@ fn serve_static_file(request: Request, filepath: &str, content_type: &str) -> io
         }
     };
 
-    println!("Serving: {file:?} with `{content_type}`");
+    println!("RESPONSE: {filepath} with `{content_type}`");
     request.respond(Response::from_file(file).with_header(content_type_header))
 }
 
-fn serve_request(request: Request) -> io::Result<()> {
+fn serve_request(mut request: Request) -> io::Result<()> {
     println!("INFO: received request. method: {:?}, url: {:?}", request.method(), request.url());
 
-    // THIS WORKS |
-    //            v
-    if (request.url() == "/" || request.url() == "/index.html") {
-        let content_type = get_content_type("index.html");
-        return serve_static_file(request, "index.html", content_type);
-    } else {
-        let filepath = request.url().to_string();
-        let filepath = &filepath[1..];
-        let content_type = get_content_type(filepath);
-        return serve_static_file(request, filepath, content_type);
-    }
+    match (request.method(), request.url()) {
+        (Method::Get, "/") | (Method::Get, "/index.html") => {
+            return serve_static_file(request, "index.html");
+        },
 
-    Ok(())
+        (Method::Post, "/query") => {
+            let mut content = String::new();
+            request.as_reader().read_to_string(&mut content).unwrap();
+            println!("POST: {} | {:?}", request.url(), content);
+            return serve_static_file(request, "index.html");
+        },
+
+        (Method::Get, _) => {
+            let filepath = request.url().to_string();
+            return serve_static_file(request, &filepath);
+        },
+
+        _ => {
+            return request.respond(Response::from_string("404").with_status_code(StatusCode(404)));
+        }
+    }
 }
 
 fn main() -> Result<(), ()>{
