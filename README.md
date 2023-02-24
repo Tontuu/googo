@@ -7,5 +7,5 @@
 ```console
 $ git clone https://github.com/Tontuu/googo.git
 $ cargo run
-# Go to `localhost:6969` and don't have fun.
+# Go to `localhost:6969` and do not have fun.
 ```
