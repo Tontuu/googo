@@ -21,7 +21,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cca491388666e04d7248af3f60f0c40cfb0991c72205595d7c396e3510207d1a"
 
 [[package]]
-name = "gogole"
+name = "googo"
 version = "0.1.0"
 dependencies = [
  "tiny_http",

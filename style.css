@@ -247,6 +247,10 @@ main .searchbar div .input-btn:focus {
     caret-color: transparent;
 }
 
+main .searchbar div form {
+    display: block;
+}
+
 main .searchbar input:focus {
     outline: none;
 }
@@ -286,6 +290,25 @@ main .bottom-text {
 
 main .bottom-text a {
     color: var(--fg-color);
+}
+
+.result {
+    margin-top: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.result a {
+    margin-top: 1em;
+    font-size: 40px;
+    font-weight: bold;
+    color: rgb(80, 80, 200);
+}
+
+.result a:hover {
+    filter:brightness(1.5);
 }
 
 .onboarding div {
